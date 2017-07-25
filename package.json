@@ -1,0 +1,7 @@
+{
+  "name": "stagemonitor-kibana",
+  "version": "5.5.0",
+  "dependencies": {
+    "dagre-d3-webpack": "0.4.17"
+  }
+}

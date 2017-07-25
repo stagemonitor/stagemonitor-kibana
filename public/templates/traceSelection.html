@@ -1,0 +1,31 @@
+<table class="kbn-table table trace-table">
+  <thead>
+    <tr>
+      <th style="width: 1%;"></th>
+      <th>Name</th>
+      <th>Timestamp</th>
+      <th>Trace-ID</th>
+      <th>Duration</th>
+      <th>Spans</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-class="{'is-open': ctrl.isOpen(trace)}" ng-repeat-start="trace in ctrl.traces" ng-click="ctrl.onClickTrace(trace)">
+      <td>
+        <span class="kuiIcon fa-caret-right" ng-class="{'fa-caret-down':  ctrl.isOpen(trace), 'fa-caret-right': ! ctrl.isOpen(trace) }"></span>
+      </td>
+      <td>{{trace.inner_hits.spans.hits.hits[0]._source.name}}</td>
+      <td>{{trace.inner_hits.spans.hits.hits[0]._source['@timestamp']}}</td>
+      <td>{{trace._source.trace_id}}</td>
+      <td>{{trace.inner_hits.spans.hits.hits[0]._source.duration_ms | number:2}} ms</td>
+      <td>{{trace.inner_hits.spans.hits.total}}</td>
+    </tr>
+    <tr ng-class="{'is-open': ctrl.isOpen(trace)}" ng-repeat-end ng-if="ctrl.isOpen(trace)">
+      <td colspan="6">
+        <trace-information trace="trace"></trace-information>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<button class="btn" ng-click="ctrl.fetchNextPage()" ng-disabled="ctrl.loadMoreDisabled">Load more</button>

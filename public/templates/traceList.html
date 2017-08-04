@@ -1,12 +1,14 @@
+<h3 ng-if="ctrl.singleTraceRoute"><a href="#/">Showing detail of single trace, click here to show all recent traces</a></h3>
+
 <table class="kbn-table table trace-table">
   <thead>
     <tr>
       <th style="width: 1%;"></th>
-      <th>Name</th>
-      <th>Timestamp</th>
-      <th>Trace-ID</th>
-      <th>Duration</th>
-      <th>Spans</th>
+      <th style="width: 29%">Name</th>
+      <th style="width: 20%">Timestamp</th>
+      <th style="width: 20%">Trace-ID</th>
+      <th style="width: 20%">Duration</th>
+      <th style="width: 10%">Spans</th>
     </tr>
   </thead>
   <tbody>
@@ -21,11 +23,12 @@
       <td>{{trace.inner_hits.spans.hits.total}}</td>
     </tr>
     <tr ng-class="{'is-open': ctrl.isOpen(trace)}" ng-repeat-end ng-if="ctrl.isOpen(trace)">
-      <td colspan="6">
-        <trace-information trace="trace"></trace-information>
+      <td></td>
+      <td class="trace-graph-container" colspan="5">
+        <trace-graph trace="trace"></trace-graph>
       </td>
     </tr>
   </tbody>
 </table>
 
-<button class="btn" ng-click="ctrl.fetchNextPage()" ng-disabled="ctrl.loadMoreDisabled">Load more</button>
+<button class="btn" ng-if="!ctrl.singleTraceRoute" ng-click="ctrl.fetchNextPage()" ng-disabled="ctrl.loadMoreDisabled">Load more</button>

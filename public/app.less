@@ -65,6 +65,8 @@
     border-bottom-left-radius: 5px;
     margin-right: 4px;
     background-color: #ACFCD9;
+    border: 1px solid transparent;
+    background-clip: content-box;
   }
 
   .node--status__high-impact {
@@ -75,12 +77,17 @@
     background-color: #D3C274;
   }
 
+  .node.span-open rect {
+    stroke: #222;
+  }
+
 }
 
-.trace-table .is-open td:last-child {
-  border-top: none;
-}
-
-.trace-table .is-open {
+.trace-graph-container,
+.table.span-details {
   background-color: #f7f7f7;
+}
+
+.doc-viewer td {
+  font-family: "Lucida Console", Monaco, monospace;
 }

@@ -4,7 +4,20 @@ This incubating plug-in for Kibana allows you to visualize distributed traces fr
 
 It looks like this:
 
-![Screenshot stagemonitor kibana plugin](https://user-images.githubusercontent.com/4292951/28668633-1e70e806-72d1-11e7-93e6-601edf99d242.png)
+1. The initial view after opening the plugin  
+![Screenshot stagemonitor kibana plugin](https://user-images.githubusercontent.com/4292951/28964437-0c7c2538-790d-11e7-9bb0-eaf7e106a32b.png)
+
+2. After clicking a trace, the basic trace visualization is shown
+![Screenshot stagemonitor kibana plugin](https://user-images.githubusercontent.com/4292951/28964436-0c7be49c-790d-11e7-8c22-12cf6cae57ba.png)
+
+3. In the trace visualization you may select a span to view the span details
+![Screenshot stagemonitor kibana plugin](https://user-images.githubusercontent.com/4292951/28964439-0c7ff0dc-790d-11e7-943b-3456b469819b.png)
+
+4. In the trace visualization you may select a span to view the span details
+![Screenshot stagemonitor kibana plugin](https://user-images.githubusercontent.com/4292951/28964438-0c7f4f4c-790d-11e7-8f9f-795ec1689e3f.png)
+
+5. This plugin also adds a scripted field in Kibana to open the trace visualization from a span in the discover tab
+![Screenshot stagemonitor kibana plugin](https://user-images.githubusercontent.com/4292951/28964440-0c8503c4-790d-11e7-8d5a-a759ece14e71.png)
 
 
 # Installation

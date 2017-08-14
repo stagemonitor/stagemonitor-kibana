@@ -1,4 +1,5 @@
 import 'ui/autoload/all';
+import modules from 'ui/modules';
 import { uiModules } from 'ui/modules';
 import uiRoutes from 'ui/routes';
 
@@ -21,7 +22,18 @@ uiRoutes
     controllerAs: 'ctrl'
   });
 
-uiModules
+let realUiModule;
+if (modules) {
+  // kibana 5.4.x
+  realUiModule = modules;
+  console.log('5.4.x');
+} else {
+  // kibana 5.5.x
+  realUiModule = uiModules;
+  console.log('5.5.x');
+}
+
+realUiModule
   .get('app/stagemonitor', ['elasticsearch', 'kibana'])
   .service('elasticsearchService', ElasticsearchService)
   .controller('traceListController', traceListController)

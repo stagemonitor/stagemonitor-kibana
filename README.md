@@ -36,8 +36,9 @@ Start elasticsearch on your machine and run the following commands
     npm install
     cd plugins
     git clone git@github.com:stagemonitor/stagemonitor-kibana.git
+    cd stagemonitor-kibana
     npm install
-    cd ..
+    cd ../..
     npm start
 
 Access Kibana under https://localhost:5601 -> the lazy optimizations may take some minutes for the initial pageload.

@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+set -o errexit
+set -o nounset
+
 echo "building archive ..."
 
 if [ -z "$1" ]; then
@@ -22,8 +25,8 @@ FILENAME=/tmp/stagemonitor-kibana-${VERSION_PLUGIN}_-_${VERSION_KIBANA}.zip
 echo "building archive for $VERSION_KIBANA ..."
 
 BASEDIR=$(dirname "$0")
-rm -rf /tmp/kibana > /dev/null || true
-rm $FILENAME > /dev/null || true
+rm -rf /tmp/kibana &> /dev/null || true
+rm $FILENAME &> /dev/null || true
 
 mkdir /tmp/kibana
 cp -r "$BASEDIR" /tmp/kibana/stagemonitor-kibana

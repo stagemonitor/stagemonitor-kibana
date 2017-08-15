@@ -1,0 +1,31 @@
+sudo: required
+dist: trusty
+language: node_js
+env:
+  - KIBANA_VERSION=5.4.0 ELASTICSEARCH_VERSION=5.5.1 PLUGIN_VERSION=0.1.0
+  - KIBANA_VERSION=5.4.1 ELASTICSEARCH_VERSION=5.5.1 PLUGIN_VERSION=0.1.0
+  - KIBANA_VERSION=5.4.2 ELASTICSEARCH_VERSION=5.5.1 PLUGIN_VERSION=0.1.0
+  - KIBANA_VERSION=5.4.3 ELASTICSEARCH_VERSION=5.5.1 PLUGIN_VERSION=0.1.0
+  - KIBANA_VERSION=5.5.0 ELASTICSEARCH_VERSION=5.5.1 PLUGIN_VERSION=0.1.0
+  - KIBANA_VERSION=5.5.1 ELASTICSEARCH_VERSION=5.5.1 PLUGIN_VERSION=0.1.0
+install:
+  - sudo add-apt-repository -y ppa:openjdk-r/ppa
+  - sudo apt-get -qq update
+  - sudo apt-get install -y openjdk-8-jdk
+  - sudo update-java-alternatives -s java-1.8.0-openjdk-amd64
+  - wget https://artifacts.elastic.co/downloads/kibana/kibana-${KIBANA_VERSION}-linux-x86_64.tar.gz
+  - tar -xzf kibana-${KIBANA_VERSION}-linux-x86_64.tar.gz
+  - wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-${ELASTICSEARCH_VERSION}.tar.gz
+  - tar -xzf elasticsearch-${ELASTICSEARCH_VERSION}.tar.gz
+  - npm install
+  - npm install -g casperjs phantomjs-prebuilt
+  - ./build.sh ${KIBANA_VERSION} ${PLUGIN_VERSION}
+  - ./elasticsearch-${ELASTICSEARCH_VERSION}/bin/elasticsearch &
+  - ./kibana-${KIBANA_VERSION}-linux-x86_64/bin/kibana-plugin install file:///tmp/stagemonitor-kibana-${PLUGIN_VERSION}_-_${KIBANA_VERSION}.zip
+  - ./kibana-${KIBANA_VERSION}-linux-x86_64/bin/kibana &
+before_script:
+  - sleep 10
+script:
+  - phantomjs testrunner.js
+
+

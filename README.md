@@ -22,9 +22,7 @@ It looks like this:
 
 # Installation
 
-Just run the following command from your Kibana installation root:
-
-    ./bin/kibana-plugin install https://github.com/stagemonitor/stagemonitor-kibana/archive/TODO
+[Have a look at our release page.](https://github.com/stagemonitor/stagemonitor-kibana/releases) Be sure to use the plugin version corresponding to your version of kibana, down to the minor patch level.
 
 
 # Development

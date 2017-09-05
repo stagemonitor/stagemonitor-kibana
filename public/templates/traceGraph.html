@@ -16,13 +16,27 @@
       Details for span <code>{{ctrl.selectedSpan._source.name}}</code>
     </h3>
 
-    <div class="doc-viewer">
+    <ul class="nav nav-tabs" role="tablist">
+      <li ng-class="ctrl.openedTab === 'attributes' ? 'active' : ''" ng-click="ctrl.openedTab = 'attributes'"><a>Attributes</a></li>
+      <li ng-class="ctrl.openedTab === 'calltree' ? 'active' : ''" ng-click="ctrl.openedTab = 'calltree'" ng-if="ctrl.selectedSpan._source.call_tree_ascii"><a>Call tree</a></li>
+    </ul>
+
+    <div class="doc-viewer" ng-if="ctrl.openedTab === 'attributes'">
       <table class="table table-condensed span-details">
-        <tr ng-repeat="prop in ctrl.selectedSpanProperties">
+        <tr ng-repeat="prop in ctrl.selectedSpanProperties" ng-if="prop.propName != 'call_tree_ascii'">
           <td>{{prop.propName}}</td>
-          <td>{{prop.value}}</td>
+          <td>
+            <span>
+              {{prop.value}}
+            </span>
+          </td>
         </tr>
       </table>
+    </div>
+
+    <div ng-if="ctrl.openedTab === 'calltree'">
+      <pre class="calltree">{{ctrl.selectedSpan._source.call_tree_ascii}}</pre>
+      <span class="small">Hint: press the <i class="fa fa-sitemap"></i> icon in the trace graph to open directly the call tree of the clicked span</span>
     </div>
   </div>
 

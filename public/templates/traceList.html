@@ -1,34 +1,34 @@
-<h3 ng-if="ctrl.singleTraceRoute"><a href="#/">Showing detail of single trace, click here to show all recent traces</a></h3>
-
-<table class="kbn-table table trace-table">
-  <thead>
-    <tr>
-      <th style="width: 1%;"></th>
-      <th style="width: 29%">Name</th>
-      <th style="width: 20%">Timestamp</th>
-      <th style="width: 20%">Trace-ID</th>
-      <th style="width: 20%">Duration</th>
-      <th style="width: 10%">Spans</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr ng-class="{'is-open': ctrl.isOpen(trace)}" ng-repeat-start="trace in ctrl.traces" ng-click="ctrl.onClickTrace(trace)">
-      <td>
-        <span class="kuiIcon fa-caret-right" ng-class="{'fa-caret-down':  ctrl.isOpen(trace), 'fa-caret-right': ! ctrl.isOpen(trace) }"></span>
-      </td>
-      <td>{{trace.inner_hits.spans.hits.hits[0]._source.name}}</td>
-      <td>{{trace.inner_hits.spans.hits.hits[0]._source['@timestamp']}}</td>
-      <td>{{trace._source.trace_id}}</td>
-      <td>{{trace.inner_hits.spans.hits.hits[0]._source.duration_ms | number:2}} ms</td>
-      <td>{{trace.inner_hits.spans.hits.total}}</td>
-    </tr>
-    <tr ng-class="{'is-open': ctrl.isOpen(trace)}" ng-repeat-end ng-if="ctrl.isOpen(trace)">
-      <td></td>
-      <td class="trace-graph-container" colspan="5">
-        <trace-graph trace="trace"></trace-graph>
-      </td>
-    </tr>
-  </tbody>
-</table>
-
-<button class="btn" ng-if="!ctrl.singleTraceRoute" ng-click="ctrl.fetchNextPage()" ng-disabled="ctrl.loadMoreDisabled">Load more</button>
+<div class="stagemonitor-kibana">
+  <h3 ng-if="ctrl.singleTraceRoute"><a href="#/">Showing detail of single trace, click here to show all recent traces</a></h3>
+  <table class="kbn-table table trace-table">
+    <thead>
+      <tr>
+        <th style="width: 1%;"></th>
+        <th style="width: 29%">Name</th>
+        <th style="width: 20%">Timestamp</th>
+        <th style="width: 20%">Trace-ID</th>
+        <th style="width: 20%">Duration</th>
+        <th style="width: 10%">Spans</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-class="{'is-open': ctrl.isOpen(trace)}" ng-repeat-start="trace in ctrl.traces" ng-click="ctrl.onClickTrace(trace)">
+        <td>
+          <span class="kuiIcon fa-caret-right" ng-class="{'fa-caret-down':  ctrl.isOpen(trace), 'fa-caret-right': ! ctrl.isOpen(trace) }"></span>
+        </td>
+        <td>{{trace.inner_hits.spans.hits.hits[0]._source.name}}</td>
+        <td>{{trace.inner_hits.spans.hits.hits[0]._source['@timestamp']}}</td>
+        <td>{{trace._source.trace_id}}</td>
+        <td>{{trace.inner_hits.spans.hits.hits[0]._source.duration_ms | number:2}} ms</td>
+        <td>{{trace.inner_hits.spans.hits.total}}</td>
+      </tr>
+      <tr ng-class="{'is-open': ctrl.isOpen(trace)}" ng-repeat-end ng-if="ctrl.isOpen(trace)">
+        <td></td>
+        <td class="trace-graph-container" colspan="5">
+          <trace-graph trace="trace"></trace-graph>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <button class="btn" ng-if="!ctrl.singleTraceRoute" ng-click="ctrl.fetchNextPage()" ng-disabled="ctrl.loadMoreDisabled">Load more</button>
+</div>

@@ -1,4 +1,4 @@
-# stagemonitor-kibana
+# stagemonitor-kibana ![build status](https://travis-ci.org/stagemonitor/stagemonitor-kibana.svg?branch=master)
 
 This incubating plug-in for Kibana allows you to visualize distributed traces from spans collected by stagemonitor.
 

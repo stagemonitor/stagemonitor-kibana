@@ -19,7 +19,7 @@ else
   VERSION_PLUGIN="$2"
 fi;
 
-FILENAME=/tmp/stagemonitor-kibana-${VERSION_PLUGIN}_-_${VERSION_KIBANA}.zip
+FILENAME=/tmp/stagemonitor-kibana-${VERSION_PLUGIN}-${VERSION_KIBANA}.zip
 
 
 echo "building archive for $VERSION_KIBANA ..."

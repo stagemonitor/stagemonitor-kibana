@@ -1,31 +1,52 @@
 sudo: required
 dist: trusty
 language: node_js
+
 env:
-  - KIBANA_VERSION=5.4.0 ELASTICSEARCH_VERSION=5.5.1 PLUGIN_VERSION=0.1.0
-  - KIBANA_VERSION=5.4.1 ELASTICSEARCH_VERSION=5.5.1 PLUGIN_VERSION=0.1.0
-  - KIBANA_VERSION=5.4.2 ELASTICSEARCH_VERSION=5.5.1 PLUGIN_VERSION=0.1.0
-  - KIBANA_VERSION=5.4.3 ELASTICSEARCH_VERSION=5.5.1 PLUGIN_VERSION=0.1.0
-  - KIBANA_VERSION=5.5.0 ELASTICSEARCH_VERSION=5.5.1 PLUGIN_VERSION=0.1.0
-  - KIBANA_VERSION=5.5.1 ELASTICSEARCH_VERSION=5.5.1 PLUGIN_VERSION=0.1.0
+  global:
+    - ELASTICSEARCH_VERSION=5.5.1
+    - PLUGIN_VERSION=0.2.0
+  matrix:
+    - KIBANA_VERSION=5.4.0
+    - KIBANA_VERSION=5.4.1
+    - KIBANA_VERSION=5.4.2
+    - KIBANA_VERSION=5.4.3
+    - KIBANA_VERSION=5.5.0
+    - KIBANA_VERSION=5.5.1
+
 install:
   - sudo add-apt-repository -y ppa:openjdk-r/ppa
   - sudo apt-get -qq update
   - sudo apt-get install -y openjdk-8-jdk
   - sudo update-java-alternatives -s java-1.8.0-openjdk-amd64
-  - wget https://artifacts.elastic.co/downloads/kibana/kibana-${KIBANA_VERSION}-linux-x86_64.tar.gz
-  - tar -xzf kibana-${KIBANA_VERSION}-linux-x86_64.tar.gz
-  - wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-${ELASTICSEARCH_VERSION}.tar.gz
-  - tar -xzf elasticsearch-${ELASTICSEARCH_VERSION}.tar.gz
+  - mkdir /tmp/kibana-server
+  - wget --directory-prefix=/tmp/kibana-server https://artifacts.elastic.co/downloads/kibana/kibana-${KIBANA_VERSION}-linux-x86_64.tar.gz
+  - tar -xzf /tmp/kibana-server/kibana-${KIBANA_VERSION}-linux-x86_64.tar.gz --directory /tmp/kibana-server
+  - mkdir /tmp/elasticsearch-server
+  - wget --directory-prefix=/tmp/elasticsearch-server https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-${ELASTICSEARCH_VERSION}.tar.gz
+  - tar -xzf /tmp/elasticsearch-server/elasticsearch-${ELASTICSEARCH_VERSION}.tar.gz --directory /tmp/elasticsearch-server
   - npm install
   - npm install -g casperjs phantomjs-prebuilt
   - ./build.sh ${KIBANA_VERSION} ${PLUGIN_VERSION}
-  - ./elasticsearch-${ELASTICSEARCH_VERSION}/bin/elasticsearch &
-  - ./kibana-${KIBANA_VERSION}-linux-x86_64/bin/kibana-plugin install file:///tmp/stagemonitor-kibana-${PLUGIN_VERSION}_-_${KIBANA_VERSION}.zip
-  - ./kibana-${KIBANA_VERSION}-linux-x86_64/bin/kibana &
+  - /tmp/elasticsearch-server/elasticsearch-${ELASTICSEARCH_VERSION}/bin/elasticsearch &
+  - /tmp/kibana-server/kibana-${KIBANA_VERSION}-linux-x86_64/bin/kibana-plugin install file:///tmp/stagemonitor-kibana-${PLUGIN_VERSION}-${KIBANA_VERSION}.zip
+  - /tmp/kibana-server/kibana-${KIBANA_VERSION}-linux-x86_64/bin/kibana &
 before_script:
-  - sleep 10
+  - sleep 10 # wait for elastic
 script:
+  - echo running tests....
   - phantomjs testrunner.js
 
-
+before_deploy:
+  - cp /tmp/stagemonitor-kibana-* ${TRAVIS_BUILD_DIR}
+  - ls -lah
+deploy:
+  provider: releases
+  api_key:
+    secure: KjOeKj0DOTGUxwiUSFlECiZrfIyrtL5mcpqilrSBuqKizv4moSaee0ZL/iGFaNoZpzBSVJO172h130rHQYZbgLX0XiZjNQpZzdSuu1HMvInxbf0y/70R8cmjlM52zOL/OaAGYolJsJPSU/XltwrH97O5FjdfeU1M35GGxwIbh/AV6NxBK0ypK0CT3G9dfVAcP+A0/bnbJWCM4CGH0HsIPFHsDajRnx4gNcW+/DBo4m+L7lB3kp33c+JcctRTAtJHTyjrUxqcPSq882P2IuyWj7HVx5ChyTHeTmmunhioZMpHmxtr7UpKYR3sPQweGCDsdNpn3HX2pr8jl67yviEoIdlpHSXk/XoIQFmt4ORPOFBIDrI8STDFpWkiSYhKkWjMcc+mViwnzZ7p1gPihwBp//3hYlD5odN8YWHDWuoA65ryT8Z1UbcTPUVKRvZTOp63rGYIRxF7uVKvY6pmPtjY4iXPo+OcDI37AYGv/fcnEQMVZz0w6RYUzP/cXCJd6Fx91N3EV4ZiJfSRTK2Pw8vLS2bfMQ7J2LNxLJUQICbB3qy0hbYf0Vdys4y/0uXiREXVlEVXbewWUFC9g4M53DXXBHwXEWQPl8b2d3sItQ27ArWYW5LPjeOAab5fmElyQlgYCRTwudYd9UvGIvhMqHY8tPR+YKpVUauYWJl8VRt0aoo=
+  file: stagemonitor-kibana-*
+  file_glob: true
+  skip_cleanup: true
+  on:
+    tags: true
+    repo: stagemonitor/stagemonitor-kibana

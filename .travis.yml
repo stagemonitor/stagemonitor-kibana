@@ -13,6 +13,9 @@ env:
     - KIBANA_VERSION=5.4.3
     - KIBANA_VERSION=5.5.0
     - KIBANA_VERSION=5.5.1
+    - KIBANA_VERSION=5.5.2
+    - KIBANA_VERSION=5.5.3
+    - KIBANA_VERSION=5.6.0
 
 install:
   - sudo add-apt-repository -y ppa:openjdk-r/ppa

@@ -1,0 +1,21 @@
+{
+  "mappings": {
+    "spans": {
+      "_all": {
+        "enabled": false
+      },
+      "dynamic_templates": [
+        {
+          "string_fields": {
+            "match": "*",
+            "match_mapping_type": "string",
+            "mapping": {
+              "ignore_above": 32766,
+              "type": "keyword"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

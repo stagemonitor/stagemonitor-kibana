@@ -1,0 +1,96 @@
+{
+  "_args": [
+    [
+      {
+        "raw": "ludo/jquery-treetable",
+        "scope": null,
+        "escapedName": null,
+        "name": null,
+        "rawSpec": "ludo/jquery-treetable",
+        "spec": "github:ludo/jquery-treetable",
+        "type": "hosted",
+        "hosted": {
+          "type": "github",
+          "ssh": "git@github.com:ludo/jquery-treetable.git",
+          "sshUrl": "git+ssh://git@github.com/ludo/jquery-treetable.git",
+          "httpsUrl": "git+https://github.com/ludo/jquery-treetable.git",
+          "gitUrl": "git://github.com/ludo/jquery-treetable.git",
+          "shortcut": "github:ludo/jquery-treetable",
+          "directUrl": "https://raw.githubusercontent.com/ludo/jquery-treetable/master/package.json"
+        }
+      },
+      "/Users/fabiantrampusch/workspace/stagemonitor-kibana/src/plugins/stagemonitor-kibana"
+    ]
+  ],
+  "_from": "ludo/jquery-treetable",
+  "_id": "jquery-treetable@3.2.0",
+  "_inCache": true,
+  "_location": "/jquery-treetable",
+  "_phantomChildren": {},
+  "_requested": {
+    "raw": "ludo/jquery-treetable",
+    "scope": null,
+    "escapedName": null,
+    "name": null,
+    "rawSpec": "ludo/jquery-treetable",
+    "spec": "github:ludo/jquery-treetable",
+    "type": "hosted",
+    "hosted": {
+      "type": "github",
+      "ssh": "git@github.com:ludo/jquery-treetable.git",
+      "sshUrl": "git+ssh://git@github.com/ludo/jquery-treetable.git",
+      "httpsUrl": "git+https://github.com/ludo/jquery-treetable.git",
+      "gitUrl": "git://github.com/ludo/jquery-treetable.git",
+      "shortcut": "github:ludo/jquery-treetable",
+      "directUrl": "https://raw.githubusercontent.com/ludo/jquery-treetable/master/package.json"
+    }
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "git://github.com/ludo/jquery-treetable.git#60c5ddfe45c94106e79694d8797fc54d4c2e807d",
+  "_shasum": "fa6712ce6399e5fe279b0785d9cc3a571665b4f9",
+  "_shrinkwrap": null,
+  "_spec": "ludo/jquery-treetable",
+  "_where": "/Users/fabiantrampusch/workspace/stagemonitor-kibana/src/plugins/stagemonitor-kibana",
+  "author": {
+    "name": "Ludo van den Boom",
+    "email": "ludo@cubicphuse.nl"
+  },
+  "bugs": {
+    "url": "https://github.com/ludo/jquery-treetable/issues"
+  },
+  "dependencies": {
+    "jquery": ">=1.6"
+  },
+  "description": "jQuery plugin for displaying a tree structure in a (HTML) table, i.e. a directory structure or a nested list.",
+  "devDependencies": {},
+  "directories": {
+    "test": "test"
+  },
+  "gitHead": "60c5ddfe45c94106e79694d8797fc54d4c2e807d",
+  "homepage": "https://github.com/ludo/jquery-treetable#readme",
+  "keywords": [
+    "explorer",
+    "file",
+    "table",
+    "tree",
+    "ui",
+    "jquery"
+  ],
+  "license": "(MIT OR GPL-2.0)",
+  "main": "jquery.treetable.js",
+  "name": "jquery-treetable",
+  "optionalDependencies": {},
+  "readme": "# jQuery treetable\n[![CDNJS](https://img.shields.io/cdnjs/v/jquery-treetable.svg)](https://cdnjs.com/libraries/jquery-treetable)\n\njQuery treetable is a plugin for jQuery, the 'Write Less, Do More, JavaScript\nLibrary'. With this plugin you can display a tree in an HTML table, e.g. a\ndirectory structure or a nested list. Why not use a list, you say? Because lists\nare great for displaying a tree, and tables are not. Oh wait, but this plugin\nuses tables, doesn't it? Yes. Why do I use a table to display a list? Because I\nneed multiple columns to display additional data besides the tree.\n\nDownload the latest release from the jQuery Plugin Registry or grab the source\ncode from Github. Please report issues through Github issues. This plugin is\nreleased under both the MIT and the GPLv2 license by Ludo van den Boom.\n\n## Documentation\n\nSee index.html for technical documentation and examples. The most recent version\nof this document is also available online at\nhttp://ludo.cubicphuse.nl/jquery-treetable. \n\n## Examples\n\n* JSFiddle with AJAX example: http://jsfiddle.net/djlerman/bbj8k9pe/ [@djlerman]\n* Example Ruby on Rails project with AJAX treetable: https://github.com/ludo/jquery-treetable-ajax-example\n",
+  "readmeFilename": "README.md",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ludo/jquery-treetable.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "version": "3.2.0"
+}

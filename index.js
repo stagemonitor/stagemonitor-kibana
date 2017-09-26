@@ -2,6 +2,7 @@ module.exports = function (kibana) {
   return new kibana.Plugin({
     require: ['kibana', 'elasticsearch'],
     uiExports: {
+//    fieldFormats: ['plugins/stagemonitor-kibana/ui/stringify/types/calltree/calltree'],
       app: {
         title: 'stagemonitor',
         order: -1000,

@@ -4,7 +4,7 @@ import dagreD3 from 'dagre-d3-webpack';
 import flat from 'flat';
 import $ from 'jquery';
 
-import traceGraph from './templates/traceGraph.html';
+import traceGraph from './traceGraph.html';
 
 export default () => {
   return {
@@ -18,8 +18,15 @@ export default () => {
       vm.selectedSpan = null;
       vm.selectedSpanProperties = [];
       vm.trace = vm.trace;
+      vm.showCallTreeWarning = !localStorage.getItem('callTreeWarningDiscarded');
+      vm.hideCallTreeWarning = hideCallTreeWarning;
 
       loadSpansOfTrace(vm.trace);
+
+      function hideCallTreeWarning() {
+        localStorage.setItem('callTreeWarningDiscarded', true);
+        vm.showCallTreeWarning = false;
+      }
 
       function loadSpansOfTrace(trace) {
         elasticsearchService.searchAllSpansFor(trace._source.trace_id)
@@ -54,25 +61,30 @@ export default () => {
             additionalClass = 'node--status__medium-impact';
           }
 
+          if (!span.fields && span._source.call_tree_json) {
+            span.fields = {
+              call_tree_json: [span._source.call_tree_json]
+            };
+          }
           span.iconClass = iconForSpan(span._source);
           span.iconTitle = iconTitleForSpan(span._source);
 
-          graph.setNode(span._source.id, {
+          const node = {
             span: span,
             spanDiscoverUrl: `../app/kibana#/doc/stagemonitor-spans-*/${span._index}/spans?id=${span._id}` +
             `&_g=(refreshInterval:(display:Off,pause:!f,value:0),time:(from:now-5y,mode:quick,to:now))`,
             label: `<div class="node--span" data-id="${span._source.id}" id="span-${span._source.id}">
-                        <span class="node--status ${additionalClass}"></span>
-                        <span class="node--name">
-                            <i class='fa ${span.iconClass}' aria-hidden='true' title="${span.iconTitle}"></i>
-                            ${span._source.name}
-                            ${span._source.call_tree_ascii ? ' <i data-calltree class="fa fa-sitemap" aria-hidden="true" title="Call-Tree available. Click here to show."></i>' : ''}
-                          </span><br />
-                        <span class="node--duration">${_.round(span._source.duration_ms, 2)} ms, ${span._source.application}</span>
-                      </div>`,
-            class: 'todo',
+                    <span class="node--status ${additionalClass}"></span>
+                    <span class="node--name">
+                        <i class='fa ${span.iconClass}' aria-hidden='true' title="${span.iconTitle}"></i>
+                        ${span._source.name}
+                        ${(span.fields && span.fields.call_tree_json) ? ' <i data-calltree class="fa fa-sitemap" aria-hidden="true" title="Call-Tree available. Click here to show."></i>' : ''}
+                      </span><br />
+                    <span class="node--duration">${_.round(span._source.duration_ms, 2)} ms, ${span._source.application}</span>
+                  </div>`,
             labelType: 'html'
-          });
+          };
+          graph.setNode(span._source.id, node);
         }
 
         graph.nodes().forEach(function (v) {
@@ -85,10 +97,12 @@ export default () => {
           node.paddingLeft = 0;
         });
 
-
-        for (const node of spans) {
-          if (node._source.parent_id) {
-            graph.setEdge(node._source.parent_id, node._source.id);
+        // set edges
+        for (const span of spans) {
+          if (span._source.parent_id && graph.node(span._source.parent_id) && graph.node(span._source.id)) {
+            graph.setEdge(span._source.parent_id, span._source.id);
+          } else if (span._source.parent_id && (!graph.node(span._source.parent_id) || !graph.node(span._source.id))) {
+            console.log('no edge between ' + span._source.parent_id + ' and ' + span._source.id + ' possible, one of them does not exist.');
           }
         }
 
@@ -136,7 +150,8 @@ export default () => {
             vm.selectedSpan = node.span;
             vm.selectedSpanProperties = _.sortBy(props, 'propName');
 
-            if (!vm.openedTab || (vm.openedTab === 'calltree' && !node.span._source.call_tree_ascii)) {
+            const hasCallTree = node.span.fields && node.span.fields.call_tree_json;
+            if (!vm.openedTab || (vm.openedTab === 'calltree' && !hasCallTree)) {
               vm.openedTab = 'attributes';
             }
           });

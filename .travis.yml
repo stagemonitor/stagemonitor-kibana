@@ -1,27 +1,27 @@
-sudo: required
+sudo: false
 dist: trusty
-language: node_js
-
+language: groovy
+addons:
+  chrome: stable
+jdk: oraclejdk8
 env:
   global:
-    - ELASTICSEARCH_VERSION=5.5.1
     - PLUGIN_VERSION=0.2.0
+    - TERM=dumb
   matrix:
-    - KIBANA_VERSION=5.4.0
-    - KIBANA_VERSION=5.4.1
-    - KIBANA_VERSION=5.4.2
-    - KIBANA_VERSION=5.4.3
-    - KIBANA_VERSION=5.5.0
-    - KIBANA_VERSION=5.5.1
-    - KIBANA_VERSION=5.5.2
-    - KIBANA_VERSION=5.5.3
-    - KIBANA_VERSION=5.6.0
+    - ELASTICSEARCH_VERSION=5.4.0 KIBANA_VERSION=5.4.0
+    - ELASTICSEARCH_VERSION=5.4.1 KIBANA_VERSION=5.4.1
+    - ELASTICSEARCH_VERSION=5.4.2 KIBANA_VERSION=5.4.2
+    - ELASTICSEARCH_VERSION=5.4.3 KIBANA_VERSION=5.4.3
+    - ELASTICSEARCH_VERSION=5.5.0 KIBANA_VERSION=5.5.0
+    - ELASTICSEARCH_VERSION=5.5.1 KIBANA_VERSION=5.5.1
+    - ELASTICSEARCH_VERSION=5.5.2 KIBANA_VERSION=5.5.2
+    - ELASTICSEARCH_VERSION=5.5.3 KIBANA_VERSION=5.5.3
+    - ELASTICSEARCH_VERSION=5.6.0 KIBANA_VERSION=5.6.0
+    - ELASTICSEARCH_VERSION=5.6.1 KIBANA_VERSION=5.6.1
+    - ELASTICSEARCH_VERSION=5.6.2 KIBANA_VERSION=5.6.2
 
 install:
-  - sudo add-apt-repository -y ppa:openjdk-r/ppa
-  - sudo apt-get -qq update
-  - sudo apt-get install -y openjdk-8-jdk
-  - sudo update-java-alternatives -s java-1.8.0-openjdk-amd64
   - mkdir /tmp/kibana-server
   - wget --directory-prefix=/tmp/kibana-server https://artifacts.elastic.co/downloads/kibana/kibana-${KIBANA_VERSION}-linux-x86_64.tar.gz
   - tar -xzf /tmp/kibana-server/kibana-${KIBANA_VERSION}-linux-x86_64.tar.gz --directory /tmp/kibana-server
@@ -29,16 +29,20 @@ install:
   - wget --directory-prefix=/tmp/elasticsearch-server https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-${ELASTICSEARCH_VERSION}.tar.gz
   - tar -xzf /tmp/elasticsearch-server/elasticsearch-${ELASTICSEARCH_VERSION}.tar.gz --directory /tmp/elasticsearch-server
   - npm install
-  - npm install -g casperjs phantomjs-prebuilt
   - ./build.sh ${KIBANA_VERSION} ${PLUGIN_VERSION}
   - /tmp/elasticsearch-server/elasticsearch-${ELASTICSEARCH_VERSION}/bin/elasticsearch &
   - /tmp/kibana-server/kibana-${KIBANA_VERSION}-linux-x86_64/bin/kibana-plugin install file:///tmp/stagemonitor-kibana-${PLUGIN_VERSION}-${KIBANA_VERSION}.zip
   - /tmp/kibana-server/kibana-${KIBANA_VERSION}-linux-x86_64/bin/kibana &
+  - wget --directory-prefix=/tmp https://chromedriver.storage.googleapis.com/2.32/chromedriver_linux64.zip
+  - unzip -d /tmp /tmp/chromedriver_linux64.zip
 before_script:
-  - sleep 10 # wait for elastic
+  - "export DISPLAY=:99.0"
+  - "sh -e /etc/init.d/xvfb start"
+  - sleep 10 # wait for elastic / kibana / xvfb
 script:
   - echo running tests....
-  - phantomjs testrunner.js
+  - pushd tests
+  - ./gradlew -Dwebdriver.chrome.driver=/tmp/chromedriver test --info --stacktrace
 
 before_deploy:
   - cp /tmp/stagemonitor-kibana-* ${TRAVIS_BUILD_DIR}

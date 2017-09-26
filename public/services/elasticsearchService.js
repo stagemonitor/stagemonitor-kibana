@@ -4,12 +4,23 @@ export default class ElasticsearchService {
     this.$http = $http;
   }
 
+  isElasticsearch54() {
+    return this.$http.get('../elasticsearch').then(res => {
+      this.isElasticsearch54 = res.data.version.number.indexOf('5.4') === 0;
+      return this.isElasticsearch54;
+    });
+  }
+
   searchAllSpansFor(traceId) {
     return this.searchSpans({
+      'stored_fields': ['*'],
       'query': {
         'term': {
           'trace_id': traceId
         }
+      },
+      '_source': {
+        'excludes': ['call_tree_ascii']
       },
       'size': 10000
     });
@@ -20,8 +31,16 @@ export default class ElasticsearchService {
   }
 
   updateTracingVisualizationUrlScriptedField() {
-    this.$http.get('../elasticsearch/.kibana/index-pattern/stagemonitor-spans-*').then(res => {
-      const fields = JSON.parse(res.data._source.fields);
+    this.$http.post('../elasticsearch/.kibana/index-pattern/_search', {
+      'query': {
+        'match': {
+          'title': 'stagemonitor-spans-*'
+        }
+      }
+    }).then(res => {
+      const hit = res.data.hits.hits[0];
+      const index = hit._source;
+      const fields = JSON.parse(index.fields);
       const tracingVisualization = {
         aggregatable: true,
         analyzed: false,
@@ -41,9 +60,9 @@ export default class ElasticsearchService {
         _.remove(fields, _.matchesProperty('name', 'trace_visualization'));
       }
       fields.push(tracingVisualization);
-      res.data._source.fields = JSON.stringify(fields);
+      index.fields = JSON.stringify(fields);
 
-      const fieldFormatMap = JSON.parse(res.data._source.fieldFormatMap);
+      const fieldFormatMap = JSON.parse(index.fieldFormatMap || '{}');
       fieldFormatMap.trace_visualization = {
         id: 'url',
         params: {
@@ -51,9 +70,9 @@ export default class ElasticsearchService {
           'urlTemplate': '../app/stagemonitor-kibana#/trace/{{value}}'
         }
       };
-      res.data._source.fieldFormatMap = JSON.stringify(fieldFormatMap);
+      index.fieldFormatMap = JSON.stringify(fieldFormatMap);
 
-      this.$http.post('../elasticsearch/.kibana/index-pattern/stagemonitor-spans-*/_update', { doc: res.data._source });
+      this.$http.post('../elasticsearch/.kibana/index-pattern/' + hit._id + '/_update', { doc: index });
     });
   }
 

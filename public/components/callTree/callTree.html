@@ -1,0 +1,50 @@
+<table class="callTree">
+
+  <thead>
+  <tr>
+    <th>Signature</th>
+    <th class="stagemonitor-calltree-executiontime">
+      Total time (ms)
+      <span class="tip glyphicon glyphicon-question-sign" data-toggle="tooltip" data-placement="left" title="Total time of method call (including children)"></span>
+    </th>
+    <th class="stagemonitor-calltree-executiontime">
+      Self time (ms)
+      <span class="tip glyphicon glyphicon-question-sign" data-toggle="tooltip" data-placement="left" title="Time spent within the method itself (excluding children)"></span>
+    </th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <tr ng-repeat="row in ::ctrl.callTree"
+      ng-class="{warning: row.executionTimeExceededThreshold}"
+      data-tt-expanded="{{row.anyChildExceedsThreshold ? 'true' : 'false'}}"
+      data-tt-parent-id="{{row.parentId}}"
+      data-tt-id="{{row.myId}}">
+    <td class="stagemonitor-calltree-signature">
+      <span>
+        <pre ng-if="row.ioQuery">
+          {{row.shortSignature ? row.shortSignature.trim() : row.signature.trim()}}
+        </pre>
+        <span ng-if="!row.ioQuery">
+          {{row.shortSignature ? row.shortSignature.trim() : row.signature.trim()}}
+        </span>
+      </span>
+      <span ng-if="!row.ioQuery">
+      <span class="wide-tooltip">
+        <span class="tip glyphicon glyphicon-question-sign" data-toggle="tooltip" data-placement="right" title="{{row.signature}}">
+        </span>
+      </span>
+      <div ng-if="row.queryCount" class="label label-primary query-count" data-display-none="{{row.anyChildExceedsThreshold}}">
+        {{row.queryCount}} <span ng-if="row.queryCount != 1">Queries</span><span ng-if="row.queryCount == 1">Query</span>
+      </div>
+      </span>
+    </td>
+
+    <td ng-if="row.executionTimeInNs > 0"><div class="progress"><div class="progress-bar" style="width: {{row.executionTimePercent}}%">{{row.executionTimeInMs}}</div></div></td>
+    <td ng-if="row.executionTimeInNs > 0"><div class="progress"><div class="progress-bar" style="width: {{row.selfExecutionTimePercent}}%">{{row.selfExecutionTimeInMs}}</div></div></td>
+    <td ng-if="!row.executionTimeInNs"></td>
+    <td ng-if="!row.executionTimeInNs"></td>
+  </tr>
+  </tbody>
+
+</table>

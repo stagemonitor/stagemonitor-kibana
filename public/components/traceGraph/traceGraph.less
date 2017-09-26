@@ -1,0 +1,92 @@
+.stagemonitor-kibana {
+
+  .trace-graph-container {
+    background-color: #fafafa;
+    padding: 0 2em;
+  }
+
+  .trace-visualization {
+    g.type-TK > rect {
+      fill: #00ffd0;
+    }
+
+    g.label {
+      color: #000;
+      font-weight: normal;
+      padding: 0;
+      font-size: 100%;
+      text-align: left;
+      line-height: 1.42857143
+    }
+
+    text {
+      font-weight: 300;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serf;
+      font-size: 14px;
+    }
+
+    svg {
+      width: 95%;
+      height: 0;
+      overflow: hidden;
+      border: 1px solid #ccc;
+      display: block;
+      margin: 1em auto;
+    }
+
+    .node rect {
+      stroke: #ccc;
+      fill: #fff;
+      stroke-width: 1.5px;
+    }
+
+    .node g div {
+      height: 40px;
+      min-width: 180px;
+      cursor: pointer;
+    }
+
+    .edgePath path {
+      stroke: #333;
+      stroke-width: 1.5px;
+    }
+
+    .node--duration {
+      display: inline-block;
+    }
+
+    .node--name {
+      display: inline-block;
+      margin-top: 3px;
+    }
+
+    .node--span {
+    }
+
+    .node--status {
+      height: 100%;
+      width: 15px;
+      display: inline-block;
+      float: left;
+      border-top-left-radius: 5px;
+      border-bottom-left-radius: 5px;
+      margin-right: 4px;
+      background-color: #ACFCD9;
+      border: 1px solid transparent;
+      background-clip: content-box;
+    }
+
+    .node--status__high-impact {
+      background-color: #FC6471;
+    }
+
+    .node--status__medium-impact {
+      background-color: #D3C274;
+    }
+
+    .node.span-open rect {
+      stroke: #222;
+    }
+  }
+
+}

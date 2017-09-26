@@ -12,7 +12,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr ng-class="{'is-open': ctrl.isOpen(trace)}" ng-repeat-start="trace in ctrl.traces" ng-click="ctrl.onClickTrace(trace)">
+      <tr class="trace-row" ng-class="{'is-open': ctrl.isOpen(trace)}" ng-repeat-start="trace in ctrl.traces" ng-click="ctrl.onClickTrace(trace)">
         <td>
           <span class="kuiIcon fa-caret-right" ng-class="{'fa-caret-down':  ctrl.isOpen(trace), 'fa-caret-right': ! ctrl.isOpen(trace) }"></span>
         </td>

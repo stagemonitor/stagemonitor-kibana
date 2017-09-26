@@ -4,10 +4,11 @@ import { uiModules } from 'ui/modules';
 import uiRoutes from 'ui/routes';
 
 import './app.less';
-import traceListTemplate from './templates/traceList.html';
-import ElasticsearchService from './elasticsearchService';
-import traceListController from './traceListController';
-import traceGraph from './traceGraphDirective';
+import traceListTemplate from './components/traceList/traceList.html';
+import ElasticsearchService from './services/elasticsearchService';
+import traceListController from './components/traceList/traceListController';
+import traceGraph from './components/traceGraph/traceGraphDirective';
+import callTree from './components/callTree/callTreeDirective';
 
 uiRoutes.enable();
 uiRoutes
@@ -26,11 +27,9 @@ let realUiModule;
 if (modules) {
   // kibana 5.4.x
   realUiModule = modules;
-  console.log('5.4.x');
 } else {
   // kibana 5.5.x
   realUiModule = uiModules;
-  console.log('5.5.x');
 }
 
 realUiModule
@@ -38,6 +37,7 @@ realUiModule
   .service('elasticsearchService', ElasticsearchService)
   .controller('traceListController', traceListController)
   .directive('traceGraph', traceGraph)
+  .directive('callTree', callTree)
   .run((elasticsearchService) => {
     elasticsearchService.updateTracingVisualizationUrlScriptedField();
   });

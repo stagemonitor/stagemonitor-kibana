@@ -1,0 +1,79 @@
+<div>
+
+  <h3>
+    Visualization for trace {{ctrl.trace._source.trace_id}} (<a target="_blank" href="../app/kibana#/discover/Request-Analysis?_g=(time:(from:now-1h,mode:quick,to:now))&_a=(filters:!((meta:(alias:!n,disabled:!f,index:'stagemonitor-spans-*',key:trace_id,negate:!f,value:'{{ctrl.trace._source.trace_id}}'),query:(match:(trace_id:(query:'{{ctrl.trace._source.trace_id}}',type:phrase))))),index:'stagemonitor-spans-*')">show all spans for this trace</a>)
+    <small class="pull-right"><a onclick="event.preventDefault(); return false;" href="#/trace/{{ctrl.trace._source.trace_id}}">Permalink</a></small>
+  </h3>
+
+  <div class="trace-visualization">
+    <svg id="trace-{{ctrl.trace._source.trace_id}}">
+      <g></g>
+    </svg>
+  </div>
+
+  <div ng-if="ctrl.selectedSpan != null">
+    <h3>
+      Details for span <code>{{ctrl.selectedSpan._source.name}}</code>
+    </h3>
+
+    <ul class="nav nav-tabs" role="tablist">
+      <li ng-class="ctrl.openedTab === 'attributes' ? 'active' : ''" ng-click="ctrl.openedTab = 'attributes'"><a>Tags</a></li>
+      <li ng-class="ctrl.openedTab === 'calltree' ? 'active' : ''" ng-click="ctrl.openedTab = 'calltree'" ng-if="ctrl.selectedSpan.fields.call_tree_json"><a>Call tree</a></li>
+    </ul>
+
+    <div class="doc-viewer stagemonitor-trace-tab" ng-if="ctrl.openedTab === 'attributes'">
+      <table class="table table-condensed span-details">
+        <thead>
+          <tr>
+            <th>Tag name</th>
+            <th>Tag value</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="prop in ctrl.selectedSpanProperties" ng-if="prop.propName != 'call_tree_json'">
+            <td>{{prop.propName}}</td>
+            <td>
+              <span>
+                {{prop.value}}
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="stagemonitor-trace-tab" ng-if="ctrl.openedTab === 'calltree'">
+
+      <div ng-if="ctrl.showCallTreeWarning" class="alert alert-info">
+        <div class="tip pull-right" data-toggle="tooltip" data-placement="left" title="Don't show again" >
+          <button ng-click="ctrl.hideCallTreeWarning()" id="hide-call-tree-info" type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <p>
+          <span class="glyphicon glyphicon-exclamation-sign"></span><strong>&nbsp;The call tree might not contain all
+          executed methods.</strong>
+        </p>
+        <p>
+          Showing all methods can result in performance problems when rendering and
+          navigating the call tree. That's why by default, only methods are shown which took longer than 0.5% of the
+          total
+          execution time. To change this, change the configuration option with the key
+          <code>stagemonitor.profiler.minExecutionTimePercent</code>.
+        </p>
+        <p>
+          There is another configuration option (<code>stagemonitor.profiler.minExecutionTimeNanos</code>) which
+          excludes very fast method invocations, as these are typically not very interesting.
+        </p>
+      </div>
+
+
+      <call-tree source="ctrl.selectedSpan.fields.call_tree_json[0]"></call-tree>
+
+      <div class="hint">
+        <span class="small">Hint: press the <i class="fa fa-sitemap"></i> icon in the trace graph to open directly the call tree of the clicked span</span>
+      </div>
+    </div>
+  </div>
+
+</div>

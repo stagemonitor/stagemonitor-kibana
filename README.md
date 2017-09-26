@@ -40,3 +40,13 @@ Start elasticsearch on your machine and run the following commands
     npm start
 
 Access Kibana under https://localhost:5601 -> the lazy optimizations may take some minutes for the initial pageload.
+
+# Tests
+
+In the tests folder, run the following command to run the tests on localhost:5601:
+
+    ./gradlew test
+
+If you are running the development instance you have to adjust the base url, as it will have a randomly generated suffix:
+
+    ./gradlew test -Dgeb.build.baseUrlTest=https://localhost:5601/znr/

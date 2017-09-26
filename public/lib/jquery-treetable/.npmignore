@@ -1,0 +1,7 @@
+*.swo
+*.swp
+.DS_Store
+.idea
+bower_components
+experiments
+node_modules

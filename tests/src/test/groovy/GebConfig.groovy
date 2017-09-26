@@ -1,0 +1,3 @@
+waiting {
+    timeout = 10
+}

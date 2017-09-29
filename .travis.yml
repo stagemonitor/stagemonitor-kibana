@@ -6,7 +6,7 @@ addons:
 jdk: oraclejdk8
 env:
   global:
-    - PLUGIN_VERSION=0.2.0
+    - PLUGIN_VERSION=0.3.0
     - TERM=dumb
   matrix:
     - ELASTICSEARCH_VERSION=5.4.0 KIBANA_VERSION=5.4.0
@@ -43,6 +43,7 @@ script:
   - echo running tests....
   - pushd tests
   - ./gradlew -Dwebdriver.chrome.driver=/tmp/chromedriver test --info --stacktrace
+  - popd
 
 before_deploy:
   - cp /tmp/stagemonitor-kibana-* ${TRAVIS_BUILD_DIR}

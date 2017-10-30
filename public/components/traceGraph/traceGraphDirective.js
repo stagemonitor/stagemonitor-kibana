@@ -20,7 +20,7 @@ export default () => {
       vm.waterfallSpans = [];
       vm.selectedSpan = null;
       vm.selectedSpanProperties = [];
-      vm.selectedVisualization = 'graph'; // TODO
+      vm.selectedVisualization = 'graph';
       vm.trace = vm.trace;
       vm.openSpan = openSpan;
 
@@ -238,6 +238,15 @@ export default () => {
           addTimestamps(span);
           span.offset = ((span.startMilliseconds - startMilliseconds) / duration) * 100;
           span.width = ((span.endMilliseconds - span.startMilliseconds) / duration) * 100;
+        }
+
+        $scope.$on('angular-resizable.resizing', adjustWidth);
+
+        function adjustWidth(e, info) {
+          const completeWidth = $('.waterfall', $element).width();
+          const percent = (info.width / completeWidth) * 100;
+          $('.waterfall--treearea', $element).width(percent + '%');
+          $('.waterfall--grapharea', $element).width((96 - percent) + '%');
         }
 
         function addTimestamps(span) {

@@ -19,7 +19,7 @@
     </svg>
 
     <div ng-show="ctrl.selectedVisualization == 'waterfall'" class="waterfall clearfix">
-      <div class="waterfall--treearea">
+      <div class="waterfall--treearea" resizable r-no-throttle="true" r-directions="['right']">
         <div ng-repeat="span in ctrl.waterfallSpans">
           <div class="waterfall--spacing waterfall--treerow"
                ng-click="ctrl.openSpan(span)"

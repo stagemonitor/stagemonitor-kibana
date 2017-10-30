@@ -3,6 +3,8 @@ import modules from 'ui/modules';
 import { uiModules } from 'ui/modules';
 import uiRoutes from 'ui/routes';
 
+import 'angular-resizable';
+
 import './app.less';
 import traceListTemplate from './components/traceList/traceList.html';
 import ElasticsearchService from './services/elasticsearchService';
@@ -36,7 +38,7 @@ if (modules) {
 }
 
 realUiModule
-  .get('app/stagemonitor', ['elasticsearch', 'kibana'])
+  .get('app/stagemonitor', ['elasticsearch', 'kibana', 'angularResizable'])
   .service('elasticsearchService', ElasticsearchService)
   .controller('traceListController', traceListController)
   .directive('callTree', callTree)

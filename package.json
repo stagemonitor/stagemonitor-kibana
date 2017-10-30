@@ -2,6 +2,7 @@
   "name": "stagemonitor-kibana",
   "version": "5.4.0",
   "dependencies": {
+    "angular-resizable": "github:Reklino/angular-resizable#717994642",
     "dagre-d3-webpack": "0.4.17",
     "flat": "^4.0.0",
     "jquery": ">=1.6"

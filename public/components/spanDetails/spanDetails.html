@@ -1,0 +1,43 @@
+<div ng-if="ctrl.selectedSpan != null">
+  <h3>
+    Details for span <code>{{ctrl.selectedSpan._source.name}}</code>
+  </h3>
+
+  <ul class="nav nav-tabs" role="tablist">
+    <li ng-class="ctrl.openedTab === 'attributes' ? 'active' : ''"
+        ng-click="ctrl.openedTab = 'attributes'"><a>Tags</a></li>
+    <li ng-class="ctrl.openedTab === 'calltree' ? 'active' : ''"
+        ng-click="ctrl.openCallTreeTab()"
+        ng-if="ctrl.hasCallTreeTab()"><a>Call tree</a></li>
+  </ul>
+
+  <div class="doc-viewer stagemonitor-trace-tab" ng-if="ctrl.openedTab === 'attributes'">
+    <table class="table table-condensed span-details">
+      <thead>
+      <tr>
+        <th>Tag name</th>
+        <th>Tag value</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr ng-repeat="prop in ctrl.selectedSpanProperties" ng-if="prop.propName != 'call_tree_json'">
+        <td>{{prop.propName}}</td>
+        <td>
+          <span>
+            {{prop.value}}
+          </span>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="stagemonitor-trace-tab" ng-if="ctrl.openedTab === 'calltree'">
+
+    <call-tree source="ctrl.selectedSpan.fields.call_tree_json[0]"></call-tree>
+
+    <div class="hint">
+      <span class="small">Hint: press the <i class="fa fa-sitemap"></i> icon in the trace graph to open directly the call tree of the clicked span</span>
+    </div>
+  </div>
+</div>

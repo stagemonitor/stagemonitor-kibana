@@ -6,9 +6,12 @@ import uiRoutes from 'ui/routes';
 import './app.less';
 import traceListTemplate from './components/traceList/traceList.html';
 import ElasticsearchService from './services/elasticsearchService';
+
 import traceListController from './components/traceList/traceListController';
-import traceGraph from './components/traceGraph/traceGraphDirective';
+
 import callTree from './components/callTree/callTreeDirective';
+import spanDetails from './components/spanDetails/spanDetailsDirective';
+import traceGraph from './components/traceGraph/traceGraphDirective';
 
 uiRoutes.enable();
 uiRoutes
@@ -36,8 +39,9 @@ realUiModule
   .get('app/stagemonitor', ['elasticsearch', 'kibana'])
   .service('elasticsearchService', ElasticsearchService)
   .controller('traceListController', traceListController)
-  .directive('traceGraph', traceGraph)
   .directive('callTree', callTree)
+  .directive('spanDetails', spanDetails)
+  .directive('traceGraph', traceGraph)
   .run((elasticsearchService) => {
     elasticsearchService.updateTracingVisualizationUrlScriptedField();
   });

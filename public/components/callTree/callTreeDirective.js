@@ -12,35 +12,46 @@ export default () => {
       const vm = this;
       vm.callTreeParsed = JSON.parse(vm.source);
       vm.callTree = [];
-      processCallTree(vm.callTree, [vm.callTreeParsed], null, 1, vm.callTreeParsed.executionTime);
+      vm.showCallTreeWarning = !localStorage.getItem('callTreeWarningDiscarded');
+      vm.hideCallTreeWarning = hideCallTreeWarning;
+      init();
 
-      $timeout(function () {
-        const $callTreeTable = $element.find('.callTree');
-        $callTreeTable.treetable({
-          expandable: true,
-          force: true,
-          indent: 25,
-          initialState: 'expanded',
-          expanderTemplate: '<a class="expander" href="#">&nbsp;</a>'
+      function init() {
+        processCallTree(vm.callTree, [vm.callTreeParsed], null, 1, vm.callTreeParsed.executionTime);
+
+        $timeout(function () {
+          const $callTreeTable = $element.find('.callTree');
+          $callTreeTable.treetable({
+            expandable: true,
+            force: true,
+            indent: 25,
+            initialState: 'expanded',
+            expanderTemplate: '<a class="expander" href="#">&nbsp;</a>'
+          });
+
+          $callTreeTable.find('tr[data-tt-expanded="false"]').each(function () {
+            $callTreeTable.treetable('collapseNode', $(this).attr('data-tt-id'));
+          });
+
+          $('[data-display-none="true"]').hide();
+
+          $callTreeTable.find('.branch').click(function () {
+            const $branch = $(this);
+            if (!$(event.target).hasClass('expander')) {
+              const treeTableNodeId = $branch.data('tt-id');
+              $callTreeTable.treetable('node', treeTableNodeId).toggle();
+            }
+            const $queryCount = $branch.find('.query-count');
+            $branch.hasClass('collapsed') ? $queryCount.show() : $queryCount.hide();
+          });
+
         });
+      }
 
-        $callTreeTable.find('tr[data-tt-expanded="false"]').each(function () {
-          $callTreeTable.treetable('collapseNode', $(this).attr('data-tt-id'));
-        });
-
-        $('[data-display-none=\'true\']').hide();
-
-        $callTreeTable.find('.branch').click(function () {
-          const $branch = $(this);
-          if (!$(event.target).hasClass('expander')) {
-            const treeTableNodeId = $branch.data('tt-id');
-            $callTreeTable.treetable('node', treeTableNodeId).toggle();
-          }
-          const $queryCount = $branch.find('.query-count');
-          $branch.hasClass('collapsed') ? $queryCount.show() : $queryCount.hide();
-        });
-
-      });
+      function hideCallTreeWarning() {
+        localStorage.setItem('callTreeWarningDiscarded', true);
+        vm.showCallTreeWarning = false;
+      }
     },
     controllerAs: 'ctrl',
     bindToController: true

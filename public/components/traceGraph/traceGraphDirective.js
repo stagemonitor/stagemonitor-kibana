@@ -18,15 +18,8 @@ export default () => {
       vm.selectedSpan = null;
       vm.selectedSpanProperties = [];
       vm.trace = vm.trace;
-      vm.showCallTreeWarning = !localStorage.getItem('callTreeWarningDiscarded');
-      vm.hideCallTreeWarning = hideCallTreeWarning;
 
       loadSpansOfTrace(vm.trace);
-
-      function hideCallTreeWarning() {
-        localStorage.setItem('callTreeWarningDiscarded', true);
-        vm.showCallTreeWarning = false;
-      }
 
       function loadSpansOfTrace(trace) {
         elasticsearchService.searchAllSpansFor(trace._source.trace_id)
@@ -149,11 +142,6 @@ export default () => {
             vm.selectedSpanProperties = [];
             vm.selectedSpan = node.span;
             vm.selectedSpanProperties = _.sortBy(props, 'propName');
-
-            const hasCallTree = node.span.fields && node.span.fields.call_tree_json;
-            if (!vm.openedTab || (vm.openedTab === 'calltree' && !hasCallTree)) {
-              vm.openedTab = 'attributes';
-            }
           });
         }
 
@@ -161,6 +149,7 @@ export default () => {
           const clickedNodeId = $(this).closest('.node--span').data('id');
           vm.openedTab = 'calltree';
           openSpanDetails(clickedNodeId);
+          $scope.$broadcast('openCallTreeTab');
         }
 
         function flattenSpanSource(spanSource) {

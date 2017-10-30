@@ -7,14 +7,38 @@
 
   <div class="trace-visualization">
 
-    <div class="pull-right">
-      <button>Graph</button>
-      <button>Waterfall</button>
+    <div class="clearfix">
+      <div class="pull-right">
+        <button ng-click="ctrl.selectedVisualization = 'graph'">Graph</button>
+        <button ng-click="ctrl.selectedVisualization = 'waterfall'">Waterfall</button>
+      </div>
     </div>
 
-    <svg id="trace-{{ctrl.trace._source.trace_id}}">
+    <svg ng-show="ctrl.selectedVisualization == 'graph'" id="trace-{{ctrl.trace._source.trace_id}}">
       <g></g>
     </svg>
+
+    <div ng-show="ctrl.selectedVisualization == 'waterfall'" class="waterfall clearfix">
+      <div class="waterfall--treearea">
+        <div ng-repeat="span in ctrl.waterfallSpans">
+          <div class="waterfall--spacing waterfall--treerow"
+               ng-click="ctrl.openSpan(span)"
+               ng-class="{'waterfall--treerow_active': span === ctrl.selectedSpan}"
+               ng-style="{'padding-left': '{{span.indentation}}em'}">
+            <i class='fa {{span.iconClass}}' aria-hidden='true' title="{{span.iconTitle}}"></i> {{span._source.name}} <small>({{span._source.application}})</small>
+          </div>
+        </div>
+      </div>
+      <div class="waterfall--grapharea">
+        <div ng-repeat="span in ctrl.waterfallSpans"
+             class="waterfall--bar"
+             ng-style="{width: '{{span.width}}%', 'margin-left': '{{span.offset}}%'}">
+          <div class="waterfall--spacing">
+            {{span._source.duration_ms | number:2}} ms
+          </div>
+        </div>
+      </div>
+    </div>
 
   </div>
 

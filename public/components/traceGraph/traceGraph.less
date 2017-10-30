@@ -92,4 +92,51 @@
     }
   }
 
+  .waterfall {
+
+    padding-left: 1em;
+    padding-right: 1em;
+    padding-bottom: 0.75em;
+
+    .waterfall--treearea {
+      width: 20%;
+      float: left;
+    }
+
+    .waterfall--treerow {
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+
+      &.waterfall--treerow_active {
+        font-weight: bold;
+      }
+
+      &:hover {
+        cursor: pointer;
+        font-weight: bold;
+      }
+    }
+
+    .waterfall--grapharea {
+      width: 80%;
+      float: left;
+      padding-left: 1em;
+      padding-right: 1em;
+    }
+
+    .waterfall--bar {
+      background-color: fadeout(color('#FC6471'), 40%);
+      white-space: nowrap;
+      color: #000;
+      min-width: 1%;
+    }
+
+    .waterfall--spacing {
+      margin: 0.25em;
+      height: 18px;
+    }
+
+  }
+
 }

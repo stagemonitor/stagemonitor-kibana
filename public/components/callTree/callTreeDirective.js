@@ -4,6 +4,8 @@ import $ from 'jquery';
 
 export default () => {
   return {
+    bindToController: true,
+    controllerAs: 'ctrl',
     template: callTree,
     scope: {
       'source': '='
@@ -52,9 +54,7 @@ export default () => {
         localStorage.setItem('callTreeWarningDiscarded', true);
         vm.showCallTreeWarning = false;
       }
-    },
-    controllerAs: 'ctrl',
-    bindToController: true
+    }
   };
 };
 

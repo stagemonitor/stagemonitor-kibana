@@ -2,9 +2,9 @@ import spanDetails from './spanDetails.html';
 
 export default () => {
   return {
-    template: spanDetails,
     bindToController: true,
     controllerAs: 'ctrl',
+    template: spanDetails,
     scope: {
       'selectedSpan': '=',
       'selectedSpanProperties': '='

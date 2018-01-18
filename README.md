@@ -24,6 +24,9 @@ It looks like this:
 
 [Have a look at our release page.](https://github.com/stagemonitor/stagemonitor-kibana/releases) Be sure to use the plugin version corresponding to your version of kibana, down to the minor patch level.
 
+# Caveats
+
+This plugin currently only works with Chrome and Firefox. Internet Explorer is not supported.
 
 # Development
 

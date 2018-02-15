@@ -7,12 +7,12 @@ repositories {
 dependencies {
     testCompile 'org.codehaus.groovy:groovy-all:2.4.10'
 
-    def gebVersion = "1.1.1"
-    def seleniumVersion = "3.5.3"
+	def gebVersion = "2.1"
+	def seleniumVersion = "3.9.1"
 
     // If using JUnit, need to depend on geb-junit (3 or 4)
-    testCompile "org.gebish:geb-junit4:1.1.1"
-    testCompile "junit:junit-dep:4.8.2"
+    testCompile "org.gebish:geb-junit4:${gebVersion}"
+    testCompile "junit:junit:4.12"
 
     // Need a driver implementation
     testCompile "org.seleniumhq.selenium:selenium-chrome-driver:${seleniumVersion}"
